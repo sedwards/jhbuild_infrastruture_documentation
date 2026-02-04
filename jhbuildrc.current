@@ -6,16 +6,11 @@ moduleset = 'bootstrap'
 #moduleset = 'gtk-osx-bootstrap.modules'
 
 use_local_modulesets = True
-modulesets_dir = '/Users/sedwards/source/gtk-osx/modulesets'
-#modulesets_dir = '/Users/sedwards/source/jhbuild/moduleset'
+#modulesets_dir = '/Users/sedwards/source/gtk-osx/modulesets'
+modulesets_dir = '/Users/sedwards/source/jhbuild/moduleset'
 
 prefix = '/Users/sedwards/gtk/inst'
 checkoutroot = '/Users/sedwards/gtk/source'
-
-
-# Import extra moduleset manually
-import jhbuild.moduleset
-jhbuild.moduleset.load(os.path.join(modulesets_dir, 'gtk-osx.modules'))
 
 # --- directories ---
 prefix = '/Users/sedwards/gtk/inst'
@@ -43,5 +38,4 @@ os.environ['AR'] = '/usr/bin/ar'
 os.environ['RANLIB'] = '/usr/bin/ranlib'
 os.environ['NM'] = '/usr/bin/nm'
 os.environ['STRIP'] = '/usr/bin/strip'
-
 
