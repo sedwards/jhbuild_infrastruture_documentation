@@ -1,0 +1,4 @@
+mv ~/.config/jhbuildrc ~/.config/jhbuildrc.bak
+mv ~/.jhbuildrc ~/.jhbuildrc.bak 2>/dev/null
+unset JHBUILDRC
+

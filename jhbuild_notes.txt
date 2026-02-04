@@ -1,0 +1,105 @@
+echo 'export PATH="$HOME/jhbuild/bin:$PATH"' >> ~/.zshrc3
+
+
+
+
+sedwards@sedwards-mini ~ % # Check what's in the gtk-osx.modules file
+grep "meta.*gtk" /Users/sedwards/source/gtk-osx/modulesets-stable/gtk-osx.modules
+grep "meta.*gtk" /Users/sedwards/source/gtk-osx/modulesets/gtk-osx.modules
+
+export G_DISABLE_ASSERT=1
+export CFLAGS="$CFLAGS -DG_ATOMIC_POINTER_LOCK_FREE=0"
+
+
+brew install python-setuptools
+brew install python-launcher
+ brew install python-yq  
+
+(IF UPDATE NOT AN OPTION)
+
+
+
+
+
+
+
+1. First run basic jbuild
+
+
+mv ~/.config/jhbuildrc ~/.config/jhbuildrc.bak
+mv ~/.jhbuildrc ~/.jhbuildrc.bak 2>/dev/null
+unset JHBUILDRC
+
+
+# Manuallly run stuff and things
+exec python3 -m pipenv run jhbuild "$@"
+
+
+----------
+
+
+
+
+/Library/Frameworks/Python.framework/Versions/3.14/bin/pip install setuptools
+
+
+inside of $HOME
+cd ~/source/jhbuild , make that the working directrory,   /Library/Frameworks/Python.framework/Versions/3.14/bin/python3 -m pip install --user /Users/sedwards/source/jbuild [current     │
+│   working directory /Users/sedwards/source/jhbuild] (Build and install jhbuild to ~/jhbuild-installation 
+
+
+### jhbuild bootstrap
+
+ards/gtk/source/util-macros-1.19.2/install-sh -c -d '/Users/sedwards/gtk/inst/_jhbuild/root-xorg-macros/Users/sedwards/gtk/inst/share/util-macros'
+ /usr/bin/install -c -m 644 /Users/sedwards/gtk/source/util-macros-1.19.2/INSTALL '/Users/sedwards/gtk/inst/_jhbuild/root-xorg-macros/Users/sedwards/gtk/inst/share/util-macros'
+ /Users/sedwards/gtk/source/util-macros-1.19.2/install-sh -c -d '/Users/sedwards/gtk/inst/_jhbuild/root-xorg-macros/Users/sedwards/gtk/inst/share/pkgconfig'
+ /usr/bin/install -c -m 644 xorg-macros.pc '/Users/sedwards/gtk/inst/_jhbuild/root-xorg-macros/Users/sedwards/gtk/inst/share/pkgconfig'
+/Applications/Xcode.app/Contents/Developer/usr/bin/make  install-data-hook
+rm -f /Users/sedwards/gtk/inst/_jhbuild/root-xorg-macros/Users/sedwards/gtk/inst/share/aclocal/xorgversion.m4
+I: Moving temporary DESTDIR '/Users/sedwards/gtk/inst/_jhbuild/root-xorg-macros' into build prefix
+I: Install complete: 3 files copied
+*** module meta-bootstrap not built due to non buildable pkg-config *** [29/29]
+*** module meta-bootstrap not built due to non buildable python *** [29/29]
+*** module meta-bootstrap not built due to non buildable libxml2 *** [29/29]
+*** module meta-bootstrap not built due to non buildable libffi *** [29/29]
+*** module meta-bootstrap not built due to non buildable libpng *** [29/29]
+*** module meta-bootstrap not built due to non buildable libtasn1 *** [29/29]
+*** module meta-bootstrap not built due to non buildable zlib *** [29/29]
+*** module meta-bootstrap not built due to non buildable freetype2 *** [29/29]
+*** module meta-bootstrap not built due to non buildable fontconfig *** [29/29]
+*** module meta-bootstrap not built due to non buildable itstool *** [29/29]
+*** the following modules were not built *** [29/29]
+pkg-config python libxml2 libffi libpng libtasn1 zlib freetype2 fontconfig itstool meta-bootstrap 
+sedwards@sedwards-mini ~ % 
+
+
+
+ORDER MATTERS, Just because you had A failure doesn't mean it is A failure.
+
+
+
+
+✦ Based on the moduleset files in your jhbuild_modulesets directory, here are the available meta-packages that you can build with jhbuild:
+
+  From gtk-osx-bootstrap.modules:
+   * `meta-gtk-osx-bootstrap`: This builds the core set of libraries needed to bootstrap the GTK environment.
+
+  From gtk-osx-network.modules:
+   * `meta-gtk-osx-webkit-gtk3`: This builds WebKitGTK and its dependencies for GTK3.
+
+  From gtk-osx.modules:
+   * `meta-gtk-osx-gtk3`: This builds the main GTK3 stack.
+   * `meta-gtk-osx-freetype`: This appears to be a null target, likely for compatibility.
+
+  To try and fix your environment, you could attempt to rebuild the core GTK stack. The most relevant targets would be:
+
+   1. jhbuild build meta-gtk-osx-bootstrap
+   2. jhbuild build meta-gtk-osx-gtk3
+
+  Running these commands may resolve the inconsistencies in your jhbuild environment. Please be aware that this will recompile a large number of packages and may take
+  a significant amount of time.
+
+
+
+
+

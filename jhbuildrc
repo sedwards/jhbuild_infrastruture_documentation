@@ -1,0 +1,44 @@
+import os
+
+# --- disable GNOME defaults ---
+modules = []
+
+# --- modulesets ---
+#use_local_modulesets = True
+#modulesets_dir = '/Users/sedwards/source/gtk-osx/modulesets'
+# /Users/sedwards/source/gtk-osx/modulesets
+#moduleset = 'gtk-osx-bootstrap.modules'
+
+# --- directories ---
+prefix = '/Users/sedwards/gtk/inst'
+checkoutroot = '/Users/sedwards/gtk/source'
+
+# --- hard-disable X11 / XQuartz ---
+os.environ['HAVE_X11'] = 'no'
+os.environ['X11_CFLAGS'] = ''
+os.environ['X11_LIBS'] = ''
+os.environ['DISPLAY'] = ''
+
+os.environ['CFLAGS'] = (
+    '-Wno-deprecated-declarations '
+    '-Wno-incompatible-function-pointer-types '
+    '-mmacosx-version-min=11.0'
+)
+
+os.environ['AR'] = '/usr/bin/ar'
+os.environ['RANLIB'] = '/usr/bin/ranlib'
+os.environ['NM'] = '/usr/bin/nm'
+os.environ['STRIP'] = '/usr/bin/strip'
+
+os.environ['CXXFLAGS'] = os.environ['CFLAGS']
+os.environ['OBJCFLAGS'] = os.environ['CFLAGS']
+os.environ['LDFLAGS'] = '-mmacosx-version-min=11.0'
+
+
+# Disable XQuartz / use Quartz
+os.environ['GDK_BACKEND'] = 'quartz'
+
+# Disable atomic pointer issues for Apple Silicon
+os.environ['CFLAGS'] += ' -DG_ATOMIC_POINTER_LOCK_FREE=0'
+os.environ['CXXFLAGS'] += ' -DG_ATOMIC_POINTER_LOCK_FREE=0'
+

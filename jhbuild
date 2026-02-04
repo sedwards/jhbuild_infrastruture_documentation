@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+# /Users/sedwards/jhbuild-installation/bin/jhbuild
+
+# Force ARM64
+if [[ "$(uname -m)" != "arm64" ]]; then
+  exec arch -arm64 "$0" "$@"
+fi
+
+export DEVROOT="/Users/sedwards"
+export DEVPREFIX="/Users/sedwards/jhbuild-installation"
+export PYTHONUSERBASE="/Users/sedwards/jhbuild-installation"
+export PIPENV_DOTENV_LOCATION="/Users/sedwards/jhbuild-installation/etc/pipenv-env"
+export PIPENV_PIPFILE="/Users/sedwards/jhbuild-installation/etc/Pipfile"
+export CARGO_HOME="/Users/sedwards/jhbuild-installation"
+export RUSTUP_HOME="/Users/sedwards/jhbuild-installation"
+export WORKON_HOME="/Users/sedwards/jhbuild-installation/share/virtualenvs"
+
+exec python3 -m pipenv run jhbuild "$@"
+
