@@ -7,17 +7,21 @@ sedwards@sedwards-mini ~ % # Check what's in the gtk-osx.modules file
 grep "meta.*gtk" /Users/sedwards/source/gtk-osx/modulesets-stable/gtk-osx.modules
 grep "meta.*gtk" /Users/sedwards/source/gtk-osx/modulesets/gtk-osx.modules
 
+# Work around old code and tell Clang to shut up
 export G_DISABLE_ASSERT=1
-export CFLAGS="$CFLAGS -DG_ATOMIC_POINTER_LOCK_FREE=0"
+echo "exporting G_DISABLE_ASSERT"
+export CFLAGS="$CFLAGS -Wno-error -DG_ATOMIC_POINTER_LOCK_FREE=0"
+echo "Update cflag atomics and don't be agressive"
+
+#export CFLAGS="-Wno-error=int-conversion -Wno-int-conversion"
+export CFLAGS="-Wno-error"
 
 
 brew install python-setuptools
 brew install python-launcher
- brew install python-yq  
+brew install python-yq     (Is this really needed?)
 
 (IF UPDATE NOT AN OPTION)
-
-
 
 
 

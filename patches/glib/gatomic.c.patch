@@ -1,0 +1,39 @@
+--- a/glib/gatomic.c
++++ b/glib/gatomic.c
+@@ -389,7 +389,7 @@ g_atomic_int_add (volatile gint *atomic,
+ gssize
+ g_atomic_pointer_add (volatile gpointer *atomic,
+                       gssize             val)
+ {
+-  return g_atomic_pointer_add ((volatile gpointer *) atomic, val);
++  return g_atomic_pointer_add ((volatile gpointer *) atomic,
++                               (gpointer)(gintptr) val);
+ }
+ 
+ gsize
+@@ -413,7 +413,7 @@ g_atomic_pointer_and (volatile gpointer *atomic,
+                       gsize               val)
+ {
+-  return g_atomic_pointer_and ((volatile gpointer *) atomic, val);
++  return g_atomic_pointer_and ((volatile gpointer *) atomic,
++                               (gpointer)(gintptr) val);
+ }
+ 
+ gsize
+@@ -437,7 +437,7 @@ g_atomic_pointer_or (volatile gpointer *atomic,
+                      gsize              val)
+ {
+-  return g_atomic_pointer_or ((volatile gpointer *) atomic, val);
++  return g_atomic_pointer_or ((volatile gpointer *) atomic,
++                              (gpointer)(gintptr) val);
+ }
+ 
+ gsize
+@@ -461,7 +461,7 @@ g_atomic_pointer_xor (volatile gpointer *atomic,
+                       gsize               val)
+ {
+-  return g_atomic_pointer_xor ((volatile gpointer *) atomic, val);
++  return g_atomic_pointer_xor ((volatile gpointer *) atomic,
++                               (gpointer)(gintptr) val);
+ }
+

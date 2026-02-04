@@ -1,0 +1,34 @@
+--- a/glib/gatomic.h
++++ b/glib/gatomic.h
+@@ -166,7 +166,7 @@
+ #define g_atomic_pointer_add(atomic, val) \
+   ( \
+     (void) (0 ? (val) ^ (val) : 0),                                          \
+-    (gssize) __sync_fetch_and_add ((atomic), (val))                          \
++    (gssize) __sync_fetch_and_add ((atomic), (gintptr) (val))               \
+   )
+ 
+ #define g_atomic_pointer_and(atomic, val) \
+@@ -173,7 +173,7 @@
+   ( \
+     (void) (0 ? (val) ^ (val) : 0),                                          \
+-    (gsize) __sync_fetch_and_and ((atomic), (val))                          \
++    (gsize) __sync_fetch_and_and ((atomic), (gintptr) (val))               \
+   )
+ 
+ #define g_atomic_pointer_or(atomic, val) \
+@@ -180,7 +180,7 @@
+   ( \
+     (void) (0 ? (val) ^ (val) : 0),                                          \
+-    (gsize) __sync_fetch_and_or ((atomic), (val))                           \
++    (gsize) __sync_fetch_and_or ((atomic), (gintptr) (val))                \
+   )
+ 
+ #define g_atomic_pointer_xor(atomic, val) \
+@@ -187,7 +187,7 @@
+   ( \
+     (void) (0 ? (val) ^ (val) : 0),                                          \
+-    (gsize) __sync_fetch_and_xor ((atomic), (val))                          \
++    (gsize) __sync_fetch_and_xor ((atomic), (gintptr) (val))               \
+   )
+
