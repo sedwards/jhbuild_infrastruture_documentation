@@ -24,6 +24,20 @@ brew install python-yq     (Is this really needed?)
 brew install python@2
 brew install libffi
 
+brew install zlib
+✔︎ Bottle zlib (1.3.1)                                                                                                                                        Downloaded  141.3KB/141.3KB
+==> Pouring zlib--1.3.1.arm64_sequoia.bottle.tar.gz
+==> Caveats
+zlib is keg-only, which means it was not symlinked into /opt/homebrew,
+because macOS already provides this software and installing another version in
+parallel can cause all kinds of trouble.
+
+For compilers to find zlib you may need to set:
+  export LDFLAGS="-L/opt/homebrew/opt/zlib/lib"
+  export CPPFLAGS="-I/opt/homebrew/opt/zlib/include"
+
+For pkgconf to find zlib you may need to set:
+  export PKG_CONFIG_PATH="/opt/homebrew/opt/zlib/lib/pkgconfig"
 
 
 (IF UPDATE NOT AN OPTION)
@@ -58,6 +72,9 @@ cd ~/source/jhbuild , make that the working directrory,   /Library/Frameworks/Py
 
 
 ### jhbuild bootstrap
+#######
+######   Order Mattters fontocnfig [22]
+########
 
 ards/gtk/source/util-macros-1.19.2/install-sh -c -d '/Users/sedwards/gtk/inst/_jhbuild/root-xorg-macros/Users/sedwards/gtk/inst/share/util-macros'
  /usr/bin/install -c -m 644 /Users/sedwards/gtk/source/util-macros-1.19.2/INSTALL '/Users/sedwards/gtk/inst/_jhbuild/root-xorg-macros/Users/sedwards/gtk/inst/share/util-macros'

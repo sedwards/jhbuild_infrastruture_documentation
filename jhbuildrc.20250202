@@ -92,7 +92,8 @@ os.environ['PKG_CONFIG_PATH'] = '/opt/homebrew/lib/pkgconfig:' + os.environ.get(
 os.environ['CFLAGS'] = '-I/opt/homebrew/include ' + os.environ.get('CFLAGS','')
 os.environ['LDFLAGS'] = '-L/opt/homebrew/lib ' + os.environ.get('LDFLAGS','')
 
-# Skip building libtasn1 from source
+# -- Skip building libtasn1 from source --
+# macOS libc has always lacked for some reason, this way jhbuild will pick up the Homebrew library, which has patches for missing strverscmp()
 skip.append('libtasn1')
 
 # Make sure pkg-config sees the Homebrew version
