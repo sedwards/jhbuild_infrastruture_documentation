@@ -1,0 +1,163 @@
+import os
+
+
+# --- minimal moduleset for bootstrap ---
+
+#moduleset = 'bootstrap'
+#moduleset = 'gtk-osx-bootstrap.modules'
+
+modules = [ 'gtk-osx-bootstrap' ]
+
+use_local_modulesets = True
+modulesets_dir = '/Users/sedwards/source/gtk-osx/modulesets'
+#modulesets_dir = '/Users/sedwards/source/jhbuild/moduleset'
+
+# --- directories ---
+prefix = '/Users/sedwards/gtk/inst'
+checkoutroot = '/Users/sedwards/gtk/source'
+
+# --- disable X11 / XQuartz ---
+os.environ['HAVE_X11'] = 'no'
+os.environ['X11_CFLAGS'] = ''
+os.environ['X11_LIBS'] = ''
+os.environ['DISPLAY'] = ''
+os.environ['GDK_BACKEND'] = 'quartz'
+
+# --- Skip Extended ---
+skip.append('freetype')
+skip.append('freetype2')
+
+# --- Work around old python --
+# Python 2 is obsolete; use system Python for build helpers
+skip.append('python')
+os.environ['PYTHON'] = '/usr/bin/python3'
+
+
+# --- compilation flags ---
+os.environ['CFLAGS'] = (
+    '-Wno-deprecated-declarations '
+    '-Wno-incompatible-function-pointer-types '
+    '-Wno-error '
+    '-mmacosx-version-min=11.0 '
+    '-DG_ATOMIC_POINTER_LOCK_FREE=0'
+)
+
+#os.environ['export'] = (
+#    'G_DISABLE_ASSERT=1 '
+#)
+
+os.environ['CFLAGS']  = os.environ.get('CFLAGS',  '-O2 -g')
+os.environ['CXXFLAGS'] = os.environ.get('CXXFLAGS', os.environ['CFLAGS'])
+
+os.environ['G_DISABLE_ASSERT'] = '1'
+
+# Use Homebrew GLib instead of bundled copies
+os.environ['PKG_CONFIG_PATH'] = '/opt/homebrew/lib/pkgconfig:' + \
+    os.environ.get('PKG_CONFIG_PATH', '')
+
+os.environ['CXXFLAGS'] = os.environ['CFLAGS']
+os.environ['OBJCFLAGS'] = os.environ['CFLAGS']
+os.environ['LDFLAGS'] = '-mmacosx-version-min=11.0'
+
+os.environ['AR'] = '/usr/bin/ar'
+os.environ['RANLIB'] = '/usr/bin/ranlib'
+os.environ['NM'] = '/usr/bin/nm'
+os.environ['STRIP'] = '/usr/bin/strip'
+
+# -- use homebrew modueles when we must --
+module_autogenargs['pkg-config'] = '--with-internal-glib=no'
+# or not at all
+skip.append('pkg-config')
+
+module_autogenargs['libxml2'] = '--without-python'
+module_autogenargs['cairo']   = '--disable-python'
+module_autogenargs['gobject-introspection'] = '--disable-python'
+
+
+
+# -~ soem helper functions ---
+
+# Make sure these exist
+
+try:
+    module_autogenargs
+except NameError:
+    module_autogenargs = {}
+
+
+# -- Attemppt an optimized freetpyype eventualy --
+# And freetpye
+skip.append('freetype')
+os.environ['PKG_CONFIG_PATH'] = '/opt/homebrew/opt/freetype/lib/pkgconfig:' + os.environ.get('PKG_CONFIG_PATH','')
+os.environ['CFLAGS'] = '-I/opt/homebrew/opt/freetype/include ' + os.environ.get('CFLAGS','')
+os.environ['LDFLAGS'] = '-L/opt/homebrew/opt/freetype/lib ' + os.environ.get('LDFLAGS','')
+
+skip.append('freetype2')
+os.environ['PKG_CONFIG_PATH'] = '/opt/homebrew/opt/freetype2/lib/pkgconfig:' + os.environ.get('PKG_CONFIG_PATH','')
+os.environ['CFLAGS'] = '-I/opt/homebrew/opt/freetype2/include ' + os.environ.get('CFLAGS','')
+os.environ['LDFLAGS'] = '-L/opt/homebrew/opt/freetype2/lib ' + os.environ.get('LDFLAGS','')
+
+# Use newer FreeType 2.14.1
+#module_download_urls['freetype2'] = 'https://download.savannah.gnu.org/releases/freetype/freetype-2.14.1.tar.gz'
+
+# Optional: if you already unpacked it
+#module_sourcesdir['freetype2'] = '/Users/sedwards/gtk/source/freetype-2.14.1'
+
+# Disable the Windows RC build
+#module_autogenargs['freetype2'] = '--disable-windows-rc'
+
+# Optional: specify where JHBuild should unpack it
+#module_sourcesdir['freetype2'] = '/Users/sedwards/gtk/source/freetype-2.14.1'
+
+#module_autogenargs['freetype2'] = '--enable-static'
+#module_autogenargs['freetype2'] = '--enable-static --enable-freetype-config --without-bzip2'
+#module_autogenargs['freetype2'] = '--enable-freetype-config --without-bzip2'
+
+
+
+##### Packages we skip and homebrew for various reasons #####
+
+# -- Do not try to build 32 bit libffi --
+skip.append('libffi')
+os.environ['PKG_CONFIG_PATH'] = '/opt/homebrew/opt/libffi/lib/pkgconfig:' + os.environ.get('PKG_CONFIG_PATH','')
+os.environ['CFLAGS'] = '-I/opt/homebrew/opt/libffi/include ' + os.environ.get('CFLAGS','')
+os.environ['LDFLAGS'] = '-L/opt/homebrew/opt/libffi/lib ' + os.environ.get('LDFLAGS','')
+
+# -- Use newer homebrew libpng --
+# Skip building libpng from source
+skip.append('libpng')
+
+# -- Add Homebrew paths for pkg-config and compiler
+os.environ['PKG_CONFIG_PATH'] = '/opt/homebrew/lib/pkgconfig:' + os.environ.get('PKG_CONFIG_PATH','')
+os.environ['CFLAGS'] = '-I/opt/homebrew/include ' + os.environ.get('CFLAGS','')
+os.environ['LDFLAGS'] = '-L/opt/homebrew/lib ' + os.environ.get('LDFLAGS','')
+
+# -- Skip building libtasn1 from source
+skip.append('libtasn1')
+
+# Make sure pkg-config sees the Homebrew version
+#os.environ['PKG_CONFIG_PATH'] = '/opt/homebrew/lib/pkgconfig:' + os.environ.get('PKG_CONFIG_PATH','')
+#os.environ['CFLAGS'] = '-I/opt/homebrew/include ' + os.environ.get('CFLAGS','')
+#os.environ['LDFLAGS'] = '-L/opt/homebrew/lib ' + os.environ.get('LDFLAGS','')
+
+# -- Skip building libtasn1 from source --
+# macOS libc has always lacked for some reason, this way jhbuild will pick up the Homebrew library, which has patches for missing strverscmp()
+skip.append('libtasn1')
+
+# Make sure pkg-config sees the Homebrew version
+os.environ['PKG_CONFIG_PATH'] = '/opt/homebrew/lib/pkgconfig:' + os.environ.get('PKG_CONFIG_PATH','')
+os.environ['CFLAGS'] = '-I/opt/homebrew/include ' + os.environ.get('CFLAGS','')
+os.environ['LDFLAGS'] = '-L/opt/homebrew/lib ' + os.environ.get('LDFLAGS','')
+
+# Tell JHBuild to skip zlib entirely
+skip.append('zlib')
+
+# and itstool
+skip.append('itstool') 
+
+#skip.extend(['libffi', 'libtasn1', 'python', 'glib'])
+
+# Force POSIX/Unix-only build
+#module_env['freetype2'] = {
+#    'CFLAGS': '-DDARWIN_NO_CARBON -DG_ATOMIC_POINTER_LOCK_FREE=0 ' + os.environ.get('CFLAGS', ''),
+#    'LDFLAGS': os.environ.get('LDFLAGS',''),

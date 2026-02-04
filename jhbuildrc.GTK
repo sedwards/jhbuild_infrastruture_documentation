@@ -1,0 +1,92 @@
+# --- Basic paths ---
+prefix = os.path.expanduser('~/gtk')
+checkoutroot = os.path.expanduser('~/gtk/source')
+buildroot = os.path.expanduser('~/gtk/build')
+
+# --- NO GNOME ---
+modules = [
+    'gtk-osx-bootstrap',
+    'gtk+'
+]
+
+# --- Use gtk-osx moduleset ---
+use_local_modulesets = False
+modulesets = ['gtk-osx.modules']
+
+# --- Toolchain sanity ---
+use_libtool = True
+build_policy = 'updated'
+skip = skip + ['pkg-config']
+
+os.environ['CFLAGS']  = os.environ.get('CFLAGS',  '-O2 -g')
+os.environ['CXXFLAGS'] = os.environ.get('CXXFLAGS', os.environ['CFLAGS'])
+
+os.environ['G_DISABLE_ASSERT'] = '1'
+
+# Use Homebrew GLib instead of bundled copies
+os.environ['PKG_CONFIG_PATH'] = '/opt/homebrew/lib/pkgconfig:' + \
+    os.environ.get('PKG_CONFIG_PATH', '')
+
+os.environ['CXXFLAGS'] = os.environ['CFLAGS']
+os.environ['OBJCFLAGS'] = os.environ['CFLAGS']
+os.environ['LDFLAGS'] = '-mmacosx-version-min=11.0'
+
+os.environ['AR'] = '/usr/bin/ar'
+os.environ['RANLIB'] = '/usr/bin/ranlib'
+os.environ['NM'] = '/usr/bin/nm'
+os.environ['STRIP'] = '/usr/bin/strip'
+
+# -- use homebrew modueles when we must --
+module_autogenargs['pkg-config'] = '--with-internal-glib=no'
+# or not at all
+skip.append('pkg-config')
+
+module_autogenargs['libxml2'] = '--without-python'
+module_autogenargs['cairo']   = '--disable-python'
+module_autogenargs['gobject-introspection'] = '--disable-python'
+
+
+
+
+
+
+
+# --- disable X11 / XQuartz ---
+os.environ['HAVE_X11'] = 'no'
+os.environ['X11_CFLAGS'] = ''
+os.environ['X11_LIBS'] = ''
+os.environ['DISPLAY'] = ''
+os.environ['GDK_BACKEND'] = 'quartz'
+
+# --- Silence useless breakage ---
+autogenargs = '--disable-static'
+
+# --- macOS specifics ---
+os.environ['MACOSX_DEPLOYMENT_TARGET'] = '11.0'
+
+# -- Turn off macOS warnings --
+
+# --- compilation flags ---
+os.environ['CFLAGS'] = (
+    '-Wno-deprecated-declarations '
+    '-Wno-incompatible-function-pointer-types '
+    '-Wno-error '
+    '-mmacosx-version-min=11.0 '
+    '-DG_ATOMIC_POINTER_LOCK_FREE=0'
+)
+
+os.environ['G_DISABLE_ASSERT'] = '1'
+
+# Use Homebrew GLib instead of bundled copies
+os.environ['PKG_CONFIG_PATH'] = '/opt/homebrew/lib/pkgconfig:' + \
+    os.environ.get('PKG_CONFIG_PATH', '')
+
+os.environ['CXXFLAGS'] = os.environ['CFLAGS']
+os.environ['OBJCFLAGS'] = os.environ['CFLAGS']
+os.environ['LDFLAGS'] = '-mmacosx-version-min=11.0'
+
+os.environ['AR'] = '/usr/bin/ar'
+os.environ['RANLIB'] = '/usr/bin/ranlib'
+os.environ['NM'] = '/usr/bin/nm'
+os.environ['STRIP'] = '/usr/bin/strip'
+
