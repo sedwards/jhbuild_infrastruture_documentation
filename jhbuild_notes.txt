@@ -21,6 +21,11 @@ brew install python-setuptools
 brew install python-launcher
 brew install python-yq     (Is this really needed?)
 
+brew install python@2
+brew install libffi
+
+
+
 (IF UPDATE NOT AN OPTION)
 
 

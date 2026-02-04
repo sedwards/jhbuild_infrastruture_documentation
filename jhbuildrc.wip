@@ -62,3 +62,22 @@ module_autogenargs['pkg-config'] = '--with-internal-glib=no'
 # or not at all
 skip.append('pkg-config')
 
+module_autogenargs['libxml2'] = '--without-python'
+module_autogenargs['cairo']   = '--disable-python'
+module_autogenargs['gobject-introspection'] = '--disable-python'
+
+# -- Do not try to build 32 bit libffi --
+skip.append('libffi')
+os.environ['PKG_CONFIG_PATH'] = '/opt/homebrew/opt/libffi/lib/pkgconfig:' + os.environ.get('PKG_CONFIG_PATH','')
+os.environ['CFLAGS'] = '-I/opt/homebrew/opt/libffi/include ' + os.environ.get('CFLAGS','')
+os.environ['LDFLAGS'] = '-L/opt/homebrew/opt/libffi/lib ' + os.environ.get('LDFLAGS','')
+
+# -- Use newer homebrew libpng --
+# Skip building libpng from source
+skip.append('libpng')
+
+# Add Homebrew paths for pkg-config and compiler
+os.environ['PKG_CONFIG_PATH'] = '/opt/homebrew/lib/pkgconfig:' + os.environ.get('PKG_CONFIG_PATH','')
+os.environ['CFLAGS'] = '-I/opt/homebrew/include ' + os.environ.get('CFLAGS','')
+os.environ['LDFLAGS'] = '-L/opt/homebrew/lib ' + os.environ.get('LDFLAGS','')
+
