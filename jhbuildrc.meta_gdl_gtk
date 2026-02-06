@@ -64,3 +64,60 @@ os.environ['LDFLAGS'] = '-L/opt/homebrew/lib ' + os.environ.get('LDFLAGS','')
 skip.append('zlib') 
 # and itstool
 skip.append('itstool')
+
+# --- Work around old python --
+# Python 2 is obsolete; use system Python for build helpers
+skip.append('python')
+os.environ['PYTHON'] = '/usr/bin/python3'
+
+os.environ['CFLAGS']  = os.environ.get('CFLAGS',  '-O2 -g')
+os.environ['CXXFLAGS'] = os.environ.get('CXXFLAGS', os.environ['CFLAGS'])
+
+os.environ['G_DISABLE_ASSERT'] = '1'
+
+# Use Homebrew GLib instead of bundled copies
+os.environ['PKG_CONFIG_PATH'] = '/opt/homebrew/lib/pkgconfig:' + \
+    os.environ.get('PKG_CONFIG_PATH', '')
+
+os.environ['CXXFLAGS'] = os.environ['CFLAGS']
+os.environ['OBJCFLAGS'] = os.environ['CFLAGS']
+os.environ['LDFLAGS'] = '-mmacosx-version-min=11.0'
+
+os.environ['AR'] = '/usr/bin/ar'
+os.environ['RANLIB'] = '/usr/bin/ranlib'
+os.environ['NM'] = '/usr/bin/nm'
+os.environ['M4'] = '/opt/homebrew/opt/m4/bin/m4'
+os.environ['STRIP'] = '/usr/bin/strip'
+
+# -------------------------------------------------
+# Force Homebrew GNU autotools (override system)
+# -------------------------------------------------
+os.environ['AUTOCONF']   = '/opt/homebrew/bin/autoconf'
+os.environ['AUTOHEADER'] = '/opt/homebrew/bin/autoheader'
+os.environ['AUTOMAKE']   = '/opt/homebrew/bin/automake'
+os.environ['ACLOCAL']    = '/opt/homebrew/bin/aclocal'
+os.environ['LIBTOOLIZE'] = '/opt/homebrew/bin/libtoolize'
+
+# Make sure aclocal sees the right macros
+os.environ['ACLOCAL_PATH'] = (
+    '/opt/homebrew/share/aclocal:'
+    + os.path.expanduser('~/gtk/inst/share/aclocal:'
+    + '/usr/share/aclocal')
+)
+
+# Ensure m4 is GNU m4
+os.environ['M4'] = '/opt/homebrew/opt/m4/bin/m4'
+
+# PATH ordering (critical)
+os.environ['PATH'] = (
+    '/opt/homebrew/bin:'
+    '/opt/homebrew/opt/m4/bin:'
+    + os.environ.get('PATH', '')
+)
+
+skip += [
+    'nasm',
+    'gtk-doc',
+    'itstool',
+]
+
