@@ -1,0 +1,66 @@
+import os
+
+# --- modulesets ---
+use_local_modulesets = True
+modulesets_dir = '/Users/sedwards/source/gtk-osx/modulesets'
+moduleset = 'gtk-osx-bootstrap.modules'
+
+# --- directories ---
+prefix = '/Users/sedwards/gtk/inst'
+checkoutroot = '/Users/sedwards/gtk/source'
+tarballdir = '/Users/sedwards/gtk/source/pkgs'
+
+# --- compiler ---
+os.environ['CC'] = 'clang'
+os.environ['CXX'] = 'clang++'
+os.environ['OBJC'] = 'clang'
+os.environ['AR'] = '/usr/bin/ar'
+os.environ['RANLIB'] = '/usr/bin/ranlib'
+
+# --- flags (no loops, no variables) ---
+os.environ['CFLAGS'] = '-Wno-deprecated-declarations -mmacosx-version-min=11.0'
+os.environ['CXXFLAGS'] = '-Wno-deprecated-declarations -mmacosx-version-min=11.0'
+os.environ['OBJCFLAGS'] = '-Wno-deprecated-declarations -mmacosx-version-min=11.0'
+os.environ['LDFLAGS'] = '-mmacosx-version-min=11.0'
+
+# -------------------------------
+# Modules to build
+# -------------------------------
+modules = [
+    'meta-gtk-osx-bootstrap',
+    'meta-gtk-osx-gtk3',
+    'meta-gtk-osx-gtk4',
+]
+
+# --- prefix visibility ---
+os.environ['CPPFLAGS'] = f"-I{prefix}/include"
+os.environ['PKG_CONFIG_PATH'] = f"{prefix}/lib/pkgconfig"
+
+skip.append('libpng')
+
+# -- Add Homebrew paths for pkg-config and compiler
+os.environ['PKG_CONFIG_PATH'] = '/opt/homebrew/lib/pkgconfig:' + os.environ.get('PKG_CONFIG_PATH','')
+os.environ['CFLAGS'] = '-I/opt/homebrew/include ' + os.environ.get('CFLAGS','')
+os.environ['LDFLAGS'] = '-L/opt/homebrew/lib ' + os.environ.get('LDFLAGS','')
+
+# -- Skip building libtasn1 from source
+skip.append('libtasn1')
+
+# Make sure pkg-config sees the Homebrew version
+#os.environ['PKG_CONFIG_PATH'] = '/opt/homebrew/lib/pkgconfig:' + os.environ.get('PKG_CONFIG_PATH','')
+#os.environ['CFLAGS'] = '-I/opt/homebrew/include ' + os.environ.get('CFLAGS','')
+#os.environ['LDFLAGS'] = '-L/opt/homebrew/lib ' + os.environ.get('LDFLAGS','')
+
+# -- Skip building libtasn1 from source --
+# macOS libc has always lacked for some reason, this way jhbuild will pick up the Homebrew library, which has patches for missing strverscmp()
+skip.append('libtasn1')
+
+# Make sure pkg-config sees the Homebrew version
+os.environ['PKG_CONFIG_PATH'] = '/opt/homebrew/lib/pkgconfig:' + os.environ.get('PKG_CONFIG_PATH','')
+os.environ['CFLAGS'] = '-I/opt/homebrew/include ' + os.environ.get('CFLAGS','')
+os.environ['LDFLAGS'] = '-L/opt/homebrew/lib ' + os.environ.get('LDFLAGS','')
+
+# Tell JHBuild to skip zlib entirely
+skip.append('zlib') 
+# and itstool
+skip.append('itstool')
